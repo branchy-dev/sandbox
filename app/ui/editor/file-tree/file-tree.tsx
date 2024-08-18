@@ -1,15 +1,11 @@
 "use client";
+import { Data } from "@/app/lib/fs/main";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { posix as path } from "path";
 import { useState } from "react";
 import FileTreeItem from "./file-tree-item";
 import styles from "./file-tree.module.css";
-
-export type Data = {
-  dirs?: Record<string, Data>;
-  files?: Set<string>;
-};
 
 export default function FileTree(props: {
   data: Data;
