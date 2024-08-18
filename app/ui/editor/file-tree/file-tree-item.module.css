@@ -1,0 +1,72 @@
+.fileTreeItem {
+  list-style-type: none;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.fileTreeItem[data-isdir] {
+  list-style-type: disclosure-closed;
+}
+
+.fileTreeItem[aria-expanded="true"] {
+  list-style-type: disclosure-open;
+}
+
+.fileTreeItem > div {
+  font-weight: 300;
+  user-select: none;
+  position: relative;
+  height: 1.5rem;
+  display: flex;
+  align-items: stretch;
+  padding-right: 0.2rem;
+}
+
+.fileTreeItem > div::before {
+  /* line highlights */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 200%;
+}
+
+.fileTreeItem > div:hover::before {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.fileTreeItem[aria-selected="true"] > div::before {
+  background-color: rgba(255, 255, 255, 0.15);
+  outline: solid 1.5px rgba(255, 255, 255, 0.3);
+}
+
+.fileTreeItem > div > * {
+  position: relative; /* show over the line highlight */
+}
+
+.fileTreeItem > div > span {
+  flex-grow: 2;
+  margin-right: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.fileTreeItem > div > button {
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+.fileTreeItem > div > button:hover {
+  background-color: rgba(86, 121, 198, 0.2);
+}
+
+.fileTreeItem > div > button > * {
+  width: 82%;
+  opacity: 0.6;
+}
+
+.fileTreeItem > div > button:hover > * {
+  opacity: 1;
+}
