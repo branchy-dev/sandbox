@@ -4,12 +4,24 @@ import { useEffect, useState } from "react";
 import { Data, dumpFileTree, fsp, initFS } from "../../lib/fs/main";
 import styles from "./editor.module.css";
 import FileTree from "./file-tree/file-tree";
+import TextEditor from "./text-editor/text-editor";
 
 export default function Editor() {
   const [data, setData] = useState<Data>({});
+  const [currentFile, setCurrentFile] = useState<{
+    path: string;
+    body: string;
+  } | null>(null);
 
-  function updateData() {
-    dumpFileTree().then((newData) => setData(newData));
+  async function updateData() {
+    await openFile(currentFile?.path);
+    const newData = await dumpFileTree();
+    setData(newData);
+  }
+
+  async function overwriteCurrentFile(newData: string) {
+    if (!currentFile) return;
+    await fsp.writeFile(currentFile.path, newData);
   }
 
   const fileRoot = "/";
@@ -36,6 +48,21 @@ export default function Editor() {
     }
   }
 
+  async function openFile(filePath?: string) {
+    if (filePath) {
+      filePath = await cleanPath(filePath);
+      const stat = await tryStat(filePath);
+      if (stat?.isFile()) {
+        const data = (await fsp.readFile(filePath)).toString();
+        return setCurrentFile({
+          path: filePath,
+          body: data,
+        });
+      }
+    }
+    return setCurrentFile(null);
+  }
+
   async function createDirectory(dirPath: string): Promise<string | undefined> {
     if (dirPath === fileRoot) return;
     const stat = await tryStat(dirPath);
@@ -56,13 +83,13 @@ export default function Editor() {
     const err = await createDirectory(path.dirname(filePath));
     if (err) throw new Error(err);
     await fsp.writeFile(filePath, "");
-    updateData();
+    await updateData();
   }
 
   async function removeFile(filePath: string) {
     filePath = cleanPath(filePath);
     await fsp.unlink(filePath);
-    updateData();
+    await updateData();
   }
 
   async function renameFile(oldPath: string, newPath: string) {
@@ -71,7 +98,7 @@ export default function Editor() {
     newPath = cleanPath(newPath);
     if (oldPath === newPath) return;
     await fsp.rename(oldPath, newPath);
-    updateData();
+    await updateData();
   }
 
   useEffect(() => {
@@ -84,10 +111,20 @@ export default function Editor() {
       <div className={styles.fileView}>
         <FileTree
           data={data}
+          selectedFile={currentFile?.path.substring(fileRoot.length) ?? null}
           createFile={writeFile}
           deleteFile={removeFile}
           renameFile={renameFile}
+          selectFile={(p) => openFile(p)}
         />
+      </div>
+      <div className={styles.editorView}>
+        {currentFile ? (
+          <TextEditor
+            contents={currentFile.body}
+            onUpdate={(newData) => overwriteCurrentFile(newData)}
+          />
+        ) : null}
       </div>
     </div>
   );

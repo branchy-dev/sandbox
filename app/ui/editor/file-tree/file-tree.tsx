@@ -9,12 +9,12 @@ import styles from "./file-tree.module.css";
 
 export default function FileTree(props: {
   data: Data;
+  selectedFile: string | null;
   createFile: (path: string) => void;
   deleteFile: (path: string) => void;
   renameFile: (oldPath: string, newPath: string) => void;
+  selectFile: (path: string) => void;
 }) {
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
-
   function display(d: Data, pathParts: string[] = []) {
     return (
       <>
@@ -44,8 +44,8 @@ export default function FileTree(props: {
                 path={filePath}
                 name={filename}
                 key={filePath}
-                isSelected={selectedFile === filePath}
-                onSelect={() => setSelectedFile(filePath)}
+                isSelected={props.selectedFile === filePath}
+                onSelect={() => props.selectFile(filePath)}
                 onDelete={() => props.deleteFile(filePath)}
                 onRename={(newPath) => props.renameFile(filePath, newPath)}
               />

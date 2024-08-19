@@ -1,0 +1,27 @@
+.editor {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.editor > .fileView {
+  flex-grow: 1;
+  display: flex;
+}
+
+.editor > .fileView > * {
+  flex-grow: 1;
+}
+
+.editor > .editorView {
+  width: 65%;
+  min-width: 65%;
+  background-color: #0d0e12;
+  display: flex;
+  padding-top: 0.5rem;
+}
+
+.editor > .editorView > * {
+  flex-grow: 1;
+  max-width: 100%;
+}

@@ -1,0 +1,10 @@
+.textEditor > div {
+  width: 100%;
+  height: 100%;
+  font-size: 0.9rem;
+}
+
+.textEditor [class="cm-gutter cm-lineNumbers"] {
+  user-select: none;
+  min-width: 33px;
+}
