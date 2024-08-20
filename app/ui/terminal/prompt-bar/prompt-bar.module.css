@@ -1,0 +1,42 @@
+.promptBar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  padding: 0.4rem 0.5rem;
+
+  margin: 1rem;
+  background: red;
+}
+
+.promptBar > .commandInput {
+  background: blue;
+  flex-grow: 1;
+  margin: 0;
+}
+
+.promptBar > .commandInput:focus {
+  outline: none;
+}
+
+.promptBar > .commandInput > .arg {
+  border: solid 0.1rem green;
+  background-color: rgba(0, 128, 0, 0.542);
+}
+
+.promptBar > .commandInput > .arg.incomplete {
+  text-decoration: wavy;
+  border-color: red;
+}
+
+.promptBar > .commandInput .token.tokenIgnored {
+  color: gray;
+}
+
+.promptBar > .commandInput .token.tokenUsed {
+  color: white;
+}
+
+.newline {
+  position: static;
+}
