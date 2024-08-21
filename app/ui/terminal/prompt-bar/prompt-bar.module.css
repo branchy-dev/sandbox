@@ -5,7 +5,6 @@
   font-size: 1.3rem;
   padding: 0.4rem 0.5rem;
 
-  margin: 1rem;
   background: red;
 }
 
@@ -17,6 +16,10 @@
 
 .promptBar > .commandInput:focus {
   outline: none;
+}
+
+.promptBar > .commandInput[aria-disabled="true"] {
+  background: green;
 }
 
 .promptBar > .commandInput > .arg {

@@ -1,7 +1,13 @@
 "use client";
 import { posix as path } from "path";
 import { useEffect, useState } from "react";
-import { Data, dumpFileTree, fsp, initFS } from "../../lib/fs/main";
+import {
+  Data,
+  dumpFileTree,
+  fsp,
+  gitWorkingDir,
+  initFS,
+} from "../../lib/fs/main";
 import styles from "./editor.module.css";
 import FileTree from "./file-tree/file-tree";
 import TextEditor from "./text-editor/text-editor";
@@ -15,7 +21,7 @@ export default function Editor() {
 
   async function updateData() {
     await openFile(currentFile?.path);
-    const newData = await dumpFileTree();
+    const newData = await dumpFileTree(fileRoot);
     setData(newData);
   }
 
@@ -24,7 +30,7 @@ export default function Editor() {
     await fsp.writeFile(currentFile.path, newData);
   }
 
-  const fileRoot = "/";
+  const fileRoot = gitWorkingDir ?? "/";
   const cleanPath = (p: string) => {
     p = path.join(fileRoot, path.normalize(p));
     const rel = path.relative(fileRoot, p);

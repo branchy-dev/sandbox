@@ -28,3 +28,5 @@ export let initFS = () => {
   fs.init("main-fs");
   initFS = () => {};
 };
+
+export const gitWorkingDir = "/my-repo";

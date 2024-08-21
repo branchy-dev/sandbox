@@ -1,0 +1,33 @@
+.terminal {
+  position: relative;
+  padding: 1.1rem 0.8rem;
+
+  --prompt-bar-height: 3rem;
+
+  background: pink;
+}
+
+.outputText {
+  border: solid 1px lime;
+}
+
+.outputErr {
+  border: solid 1px maroon;
+}
+
+.promptBar {
+  position: absolute;
+  bottom: 1rem;
+  left: 2rem;
+  right: 2rem;
+  height: var(--prompt-bar-height);
+}
+
+.history {
+  height: 10rem;
+  padding-bottom: calc(var(--prompt-bar-height) / 2);
+  margin-bottom: calc(var(--prompt-bar-height) / 2);
+  overflow: scroll;
+
+  background: white;
+}

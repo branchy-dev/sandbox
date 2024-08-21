@@ -1,11 +1,12 @@
 "use client";
 import { firaCode } from "@/app/lib/fonts/main";
 import { tokenizeLine, TokenType } from "@/app/lib/shell/tokenizer";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import styles from "./prompt-bar.module.css";
 
 export default function PromptBar(props: {
   onCommand: (args: string[]) => void;
+  running: boolean;
 }) {
   const commandInput = useRef<HTMLPreElement>(null);
   const [inputData, setInputData] = useState<[string, number?]>([
@@ -131,9 +132,9 @@ export default function PromptBar(props: {
   useLayoutEffect(() => {
     if (!commandInput.current) return;
     highlight();
-    commandInput.current.appendChild(document.createElement('br'));
+    commandInput.current.appendChild(document.createElement("br"));
     if (inputData[1] !== undefined) setCaretPos(inputData[1]);
-  }, [commandInput, inputData]);
+  }, [inputData]);
 
   function submitCommand() {
     const textbox = commandInput.current;
@@ -162,12 +163,13 @@ export default function PromptBar(props: {
       <pre
         role="textbox"
         className={styles.commandInput}
-        contentEditable
+        contentEditable={!props.running}
         autoCorrect="no"
         autoCapitalize="no"
         spellCheck={false}
         onInput={() => update()}
         ref={commandInput}
+        aria-disabled={props.running}
         onKeyDownCapture={(e) => {
           if (e.key === "Enter") {
             if (commandInput.current?.dataset.valid === "true") {
