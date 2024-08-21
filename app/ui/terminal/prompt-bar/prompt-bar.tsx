@@ -1,13 +1,17 @@
 "use client";
 import { firaCode } from "@/app/lib/fonts/main";
 import { tokenizeLine, TokenType } from "@/app/lib/shell/tokenizer";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "./prompt-bar.module.css";
 
 export default function PromptBar(props: {
-  onCommand: (args: [string]) => void;
+  onCommand: (args: string[]) => void;
 }) {
   const commandInput = useRef<HTMLPreElement>(null);
+  const [inputData, setInputData] = useState<[string, number?]>([
+    "",
+    undefined,
+  ]);
 
   function getCaretPos() {
     const textbox = commandInput.current;
@@ -75,7 +79,7 @@ export default function PromptBar(props: {
   function highlight() {
     const textbox = commandInput.current;
     if (!textbox) return;
-    const value = textbox.textContent!;
+    const value = inputData[0];
     const data = tokenizeLine(value);
 
     textbox.innerHTML = "";
@@ -121,21 +125,15 @@ export default function PromptBar(props: {
   }
 
   function update() {
-    const textbox = commandInput.current;
-    if (!textbox) return;
-    const caretPos = getCaretPos();
-    if (textbox.lastElementChild?.tagName.toLowerCase() === "br")
-      textbox.removeChild(textbox.lastElementChild);
-    highlight();
-    textbox.appendChild(document.createElement("br"));
-    if (caretPos !== undefined) setCaretPos(caretPos);
+    setInputData([commandInput.current?.textContent || "", getCaretPos()]);
   }
 
-  useEffect(() => {
-    const textbox = commandInput.current;
-    if (!textbox) return;
-    textbox.replaceChildren(document.createElement("br"));
-  }, [commandInput]);
+  useLayoutEffect(() => {
+    if (!commandInput.current) return;
+    highlight();
+    commandInput.current.appendChild(document.createElement('br'));
+    if (inputData[1] !== undefined) setCaretPos(inputData[1]);
+  }, [commandInput, inputData]);
 
   function submitCommand() {
     const textbox = commandInput.current;
@@ -154,7 +152,7 @@ export default function PromptBar(props: {
     }
     if (!args.length) return false;
     textbox.replaceChildren(document.createElement("br"));
-    props.onCommand(args as [string]);
+    props.onCommand(args);
     return true;
   }
 
