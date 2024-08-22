@@ -158,8 +158,8 @@ export default function PromptBar(props: {
   }
 
   return (
-    <div className={styles.promptBar + " " + firaCode.className}>
-      <span className={styles.prompt}>$</span>
+    <div className={styles.promptBar + " " + firaCode.className} aria-disabled={props.running}>
+      <div className={styles.prompt}>$</div>
       <pre
         role="textbox"
         className={styles.commandInput}

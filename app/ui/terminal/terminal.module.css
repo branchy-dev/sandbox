@@ -1,10 +1,13 @@
 .terminal {
   position: relative;
-  padding: 1.1rem 0.8rem;
+  background-color: #070707;
+  color: #c6c6c6;
 
   --prompt-bar-height: 3rem;
+}
 
-  background: pink;
+.terminal * {
+  font-family: inherit;
 }
 
 .outputText {
@@ -24,10 +27,7 @@
 }
 
 .history {
-  height: 10rem;
-  padding-bottom: calc(var(--prompt-bar-height) / 2);
-  margin-bottom: calc(var(--prompt-bar-height) / 2);
+  height: 14rem;
+  padding-bottom: calc(var(--prompt-bar-height) + 0.5rem);
   overflow: scroll;
-
-  background: white;
 }

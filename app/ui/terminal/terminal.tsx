@@ -4,6 +4,7 @@ import { useState } from "react";
 import HistoryItem from "./log-history/history-item";
 import PromptBar from "./prompt-bar/prompt-bar";
 import styles from "./terminal.module.css";
+import { firaCode } from "@/app/lib/fonts/main";
 
 export default function Terminal() {
   type historyItem = { args: string[]; output: React.ReactNode[] };
@@ -41,7 +42,7 @@ export default function Terminal() {
   }
 
   return (
-    <div className={styles.terminal}>
+    <div className={styles.terminal + ' ' + firaCode.className}>
       <div className={styles.history}>
         {history.map((item, i) => (
           <HistoryItem key={i} args={item.args}>
