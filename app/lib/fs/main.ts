@@ -1,5 +1,5 @@
 import LightningFS from "@isomorphic-git/lightning-fs";
-import path from "path";
+import { posix as path } from "path";
 
 export type Data = {
   dirs?: Record<string, Data>;

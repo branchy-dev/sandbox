@@ -1,7 +1,7 @@
 import fs from "@/app/lib/fs/main";
 import arg from "arg";
 import git from "isomorphic-git";
-import path from "path";
+import { posix as path } from "path";
 import { ExitStatus, Out } from "../../execute";
 
 export const argSchema = {
