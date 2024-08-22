@@ -6,10 +6,10 @@ export type Data = {
   files?: Set<string>;
 };
 
-export const fs = new LightningFS();
-export const fsp = fs.promises;
+const fs = new LightningFS();
+const fsp = fs.promises;
 
-export async function dumpFileTree(parent = "/") {
+async function dumpTree(parent = "/") {
   const children = await fsp.readdir(parent);
   const data: Data = {
     dirs: {},
@@ -18,15 +18,69 @@ export async function dumpFileTree(parent = "/") {
   for (const child of children) {
     const childPath = path.join(parent, child);
     const { type } = await fsp.stat(childPath);
-    if (type === "dir") data.dirs![child] = await dumpFileTree(childPath);
+    if (type === "dir") data.dirs![child] = await dumpTree(childPath);
     if (type === "file") data.files!.add(child);
   }
   return data;
 }
 
-export let initFS = () => {
+function init() {
   fs.init("main-fs");
-  initFS = () => {};
-};
+}
 
-export const gitWorkingDir = "/my-repo";
+const gitWorkingDir = "/my-repo";
+
+async function exists(filepath: string) {
+  try {
+    await fsp.stat(filepath);
+    return true;
+  } catch (e) {
+    if (e instanceof Error) {
+      const error = e.message.split(":")[0];
+      if (error === "ENOENT") {
+        return false;
+      }
+    }
+    throw e;
+  }
+}
+
+async function isFile(filepath: string) {
+  try {
+    const stat = await fsp.stat(filepath);
+    return stat.isFile();
+  } catch (e) {
+    if (e instanceof Error) {
+      const error = e.message.split(":")[0];
+      if (error === "ENOENT") {
+        return false;
+      }
+    }
+    throw e;
+  }
+}
+
+async function isDirectory(filepath: string) {
+  try {
+    const stat = await fsp.stat(filepath);
+    return stat.isDirectory();
+  } catch (e) {
+    if (e instanceof Error) {
+      const error = e.message.split(":")[0];
+      if (error === "ENOENT") {
+        return false;
+      }
+    }
+    throw e;
+  }
+}
+
+export default {
+  p: fsp,
+  exists,
+  isFile,
+  isDirectory,
+  dumpTree,
+  init,
+  gitWorkingDir,
+};

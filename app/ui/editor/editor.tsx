@@ -1,13 +1,7 @@
 "use client";
 import { posix as path } from "path";
 import { useEffect, useState } from "react";
-import {
-  Data,
-  dumpFileTree,
-  fsp,
-  gitWorkingDir,
-  initFS,
-} from "../../lib/fs/main";
+import fs, { Data } from "../../lib/fs/main";
 import styles from "./editor.module.css";
 import FileTree from "./file-tree/file-tree";
 import TextEditor from "./text-editor/text-editor";
@@ -21,16 +15,16 @@ export default function Editor() {
 
   async function updateData() {
     await openFile(currentFile?.path);
-    const newData = await dumpFileTree(fileRoot);
+    const newData = await fs.dumpTree(fileRoot);
     setData(newData);
   }
 
   async function overwriteCurrentFile(newData: string) {
     if (!currentFile) return;
-    await fsp.writeFile(currentFile.path, newData);
+    await fs.p.writeFile(currentFile.path, newData);
   }
 
-  const fileRoot = gitWorkingDir ?? "/";
+  const fileRoot = fs.gitWorkingDir ?? "/";
   const cleanPath = (p: string) => {
     p = path.join(fileRoot, path.normalize(p));
     const rel = path.relative(fileRoot, p);
@@ -40,26 +34,11 @@ export default function Editor() {
     return p;
   };
 
-  async function tryStat(filePath: string) {
-    try {
-      return await fsp.stat(filePath);
-    } catch (e) {
-      if (e instanceof Error) {
-        const error = e.message.split(":")[0];
-        if (error === "ENOENT") {
-          return null;
-        }
-      }
-      throw e;
-    }
-  }
-
   async function openFile(filePath?: string) {
     if (filePath) {
       filePath = await cleanPath(filePath);
-      const stat = await tryStat(filePath);
-      if (stat?.isFile()) {
-        const data = (await fsp.readFile(filePath)).toString();
+      if (await fs.isFile(filePath)) {
+        const data = (await fs.p.readFile(filePath)).toString();
         return setCurrentFile({
           path: filePath,
           body: data,
@@ -71,12 +50,11 @@ export default function Editor() {
 
   async function createDirectory(dirPath: string): Promise<string | undefined> {
     if (dirPath === fileRoot) return;
-    const stat = await tryStat(dirPath);
-    if (!stat) {
+    if (!(await fs.exists(dirPath))) {
       const res = await createDirectory(path.dirname(dirPath));
       if (res) return res;
-      await fsp.mkdir(dirPath);
-    } else if (!stat.isDirectory()) {
+      await fs.p.mkdir(dirPath);
+    } else if (!(await fs.isDirectory(dirPath))) {
       return "Requested parent directory collides with existing file";
     }
   }
@@ -84,17 +62,16 @@ export default function Editor() {
   async function writeFile(filePath: string) {
     if (filePath === "") return;
     filePath = cleanPath(filePath);
-    const stat = await tryStat(filePath);
-    if (stat) throw new Error("Requested path exists");
+    if (await fs.exists(filePath)) throw new Error("Requested path exists");
     const err = await createDirectory(path.dirname(filePath));
     if (err) throw new Error(err);
-    await fsp.writeFile(filePath, "");
+    await fs.p.writeFile(filePath, "");
     await updateData();
   }
 
   async function removeFile(filePath: string) {
     filePath = cleanPath(filePath);
-    await fsp.unlink(filePath);
+    await fs.p.unlink(filePath);
     await updateData();
   }
 
@@ -103,12 +80,12 @@ export default function Editor() {
     oldPath = cleanPath(oldPath);
     newPath = cleanPath(newPath);
     if (oldPath === newPath) return;
-    await fsp.rename(oldPath, newPath);
+    await fs.p.rename(oldPath, newPath);
     await updateData();
   }
 
   useEffect(() => {
-    initFS();
+    fs.init();
     updateData();
   }, []);
 

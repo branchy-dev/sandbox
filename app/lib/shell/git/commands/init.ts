@@ -1,6 +1,7 @@
-import { fs, gitWorkingDir, initFS } from "@/app/lib/fs/main";
+import fs from "@/app/lib/fs/main";
 import arg from "arg";
 import git from "isomorphic-git";
+import path from "path";
 import { ExitStatus, Out } from "../../execute";
 
 export const argSchema = {
@@ -16,12 +17,19 @@ export async function run(
     out.err("git init: Unsupported argument configuration");
     return ExitStatus.ERR;
   }
-  initFS();
+  fs.init();
+  const initialized: boolean = await fs.isFile(
+    path.join(fs.gitWorkingDir, ".git", "HEAD")
+  );
   await git.init({
-    fs,
-    dir: gitWorkingDir,
+    fs: fs.p,
+    dir: fs.gitWorkingDir,
     defaultBranch: args["--initial-branch"],
   });
-  out.text("Initialized empty Git repository");
+  out.text(
+    initialized
+      ? "Reinitialized existing Git repository"
+      : "Initialized empty Git repository"
+  );
   return ExitStatus.OK;
 }
