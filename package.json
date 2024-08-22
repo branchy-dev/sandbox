@@ -19,6 +19,7 @@
     "@uiw/react-codemirror": "^4.23.0",
     "arg": "^5.0.2",
     "isomorphic-git": "^1.27.1",
+    "minimatch": "^10.0.1",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
