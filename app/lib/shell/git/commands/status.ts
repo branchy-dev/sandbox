@@ -28,7 +28,6 @@ export async function run(
   type changes = { [filename: string]: changeType };
   const indexChanges: changes = {};
   const workingChanges: changes = {};
-  console.log("matrix", matrix);
   for (const [filename, a, c, b] of matrix) {
     if (a === 0 && b >= 2)
       // if absent in head and index != head
