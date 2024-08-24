@@ -58,7 +58,15 @@ export default function Graph(props: { update: number }) {
       fs: fs.p,
       dir: fs.gitWorkingDir,
     });
-    newData.push(`HEAD(HEAD) --> branch-${currBranch}`);
+    if (currBranch) newData.push(`HEAD(HEAD) --> branch-${currBranch}`);
+    else {
+      const currHead = await git.resolveRef({
+        fs: fs.p,
+        dir: fs.gitWorkingDir,
+        ref: "HEAD",
+      });
+      newData.push(`HEAD(HEAD) --> ${currHead}`);
+    }
     setData(newData.join("\n"));
   }
 
