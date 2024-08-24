@@ -13,11 +13,11 @@
 }
 
 .outputText {
-  border: solid 1px lime;
+  color: #efefef;
 }
 
 .outputErr {
-  border: solid 1px maroon;
+  color: #dd655f;
 }
 
 .promptBar {
@@ -29,7 +29,7 @@
 }
 
 .history {
-  height: 14rem;
   padding-bottom: calc(var(--prompt-bar-height) + 0.5rem);
+  height: 100%;
   overflow: scroll;
 }

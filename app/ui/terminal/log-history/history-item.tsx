@@ -14,7 +14,10 @@ export default function HistoryItem(props: {
           </span>
         ))}
       </div>
-      <pre className={styles.historyOutput}>{props.children}</pre>
+      {props.children &&
+      (!(props.children instanceof Array) || props.children.length) ? (
+        <pre className={styles.historyOutput}>{props.children}</pre>
+      ) : undefined}
     </div>
   );
 }

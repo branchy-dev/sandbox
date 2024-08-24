@@ -42,7 +42,7 @@ export default function Terminal() {
   }
 
   return (
-    <div className={styles.terminal + ' ' + firaCode.className}>
+    <div className={styles.terminal + " " + firaCode.className}>
       <div className={styles.history}>
         {history.map((item, i) => (
           <HistoryItem key={i} args={item.args}>

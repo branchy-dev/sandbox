@@ -1,27 +1,27 @@
 .historyItem {
-  border: solid 1px orange;
   padding: 0.8rem;
 }
 
 .historyCommand {
-  border: solid 1px black;
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
 }
 
 .historyCommand > span {
-  border: solid 1px red;
   padding: 0.05rem 0.2rem;
   white-space: pre;
 }
 
 .historyCommand > .arg {
-  background: #ff000033;
+  background: #183477;
   border-radius: 0.3rem;
 }
 
 .historyOutput {
-  border: solid 1px green;
+  background-color: #b1d4fd51;
   width: fit-content;
+  padding: 0.6rem 1.4rem 0.6rem 1rem;
+  margin-left: 1rem;
+  border-radius: 0.4rem;
 }
