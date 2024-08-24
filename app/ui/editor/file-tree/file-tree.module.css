@@ -9,7 +9,6 @@
   display: flex;
   align-items: center;
   background-color: #1c2029;
-  padding: 0.1rem 0.12rem;
 }
 
 .fileTree > header > * {
@@ -19,7 +18,7 @@
 .fileTree > header > h2 {
   margin: 0;
   flex-grow: 1;
-  padding: 0 0.2rem;
+  padding: 0 0.4rem;
   font-weight: 500;
 }
 
@@ -27,6 +26,7 @@
   background: none;
   border: none;
   color: inherit;
+  padding: 0.2rem 0.4rem;
 }
 
 .fileTree > header > button:hover {
@@ -34,7 +34,7 @@
 }
 
 .fileTree > header > button > * {
-  width: 82%;
+  width: 0.82em;
 }
 
 .fileTree > ul {
