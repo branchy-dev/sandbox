@@ -60,7 +60,7 @@ export default function FileTree(props: {
   return (
     <section className={styles.fileTree}>
       <header>
-        <h2>FILES</h2>
+        <h2>WORKING TREE</h2>
         <button title="Create a new file" onClick={() => setPlaceholder(true)}>
           <FontAwesomeIcon icon={faPlus} />
         </button>
