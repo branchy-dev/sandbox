@@ -6,7 +6,7 @@ import styles from "./chart.module.css";
 export default function Chart(props: { data: string }) {
   const chartDiv = useRef<HTMLDivElement>(null);
 
-  mermaid.initialize({ startOnLoad: false });
+  mermaid.initialize({ startOnLoad: false, theme: 'dark' });
   async function renderChart() {
     if (!chartDiv.current) return;
     document.getElementById("mermaid-chart")?.remove();

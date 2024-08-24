@@ -1,0 +1,4 @@
+.chart > svg {
+  display: block;
+  margin: auto;
+}
