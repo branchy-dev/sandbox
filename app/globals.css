@@ -11,7 +11,14 @@ code {
   font-family: "Courier New", Courier, monospace;
 }
 
-html, body, main {
+html,
+body,
+main {
   height: 100vh;
   margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
 }

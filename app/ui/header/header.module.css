@@ -1,0 +1,14 @@
+.header {
+  background-color: #090909;
+  color: #dadada;
+  padding: 0.4rem 0;
+}
+
+.header > h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  display: block;
+  width: fit-content;
+  margin: auto;
+}

@@ -1,0 +1,20 @@
+.footer {
+  background-color: #010101;
+  color: #a7a7a7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.footer > * {
+  display: block;
+}
+
+.footer > hr {
+  margin: 0;
+  height: 1rem;
+  border-color: #a7a7a7;
+}
