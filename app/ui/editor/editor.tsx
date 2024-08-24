@@ -43,6 +43,7 @@ export default function Editor(props: {
   };
 
   async function openFile(filePath?: string) {
+    if (filePath === currentFile?.path) return;
     if (filePath) {
       filePath = await cleanPath(filePath);
       if (await fs.isFile(filePath)) {
