@@ -24,7 +24,11 @@ async function dumpTree(parent = "/") {
   return data;
 }
 
-function init() {
+let initialized = false;
+
+async function init() {
+  if (initialized) return;
+  initialized = true;
   fs.init("main-fs");
 }
 
