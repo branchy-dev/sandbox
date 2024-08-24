@@ -4,8 +4,6 @@
   color: #c6c6c6;
   width: 100%;
   height: 100%;
-
-  --prompt-bar-height: 3rem;
 }
 
 .terminal * {
@@ -25,11 +23,18 @@
   bottom: 1rem;
   left: 2rem;
   right: 2rem;
-  height: var(--prompt-bar-height);
 }
 
 .history {
-  padding-bottom: calc(var(--prompt-bar-height) + 0.5rem);
   height: 100%;
   overflow: scroll;
+}
+
+.promptBar,
+.history > :last-child {
+  height: 3rem;
+}
+
+.history > :last-child {
+  padding-top: 0.5rem;
 }

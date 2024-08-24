@@ -1,7 +1,7 @@
 "use client";
 import { firaCode } from "@/app/lib/fonts/main";
 import { tokenizeLine, TokenType } from "@/app/lib/shell/tokenizer";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "./prompt-bar.module.css";
 
 export default function PromptBar(props: {
@@ -157,8 +157,21 @@ export default function PromptBar(props: {
     return true;
   }
 
+  useEffect(() => {
+    if (
+      !props.running &&
+      commandInput.current &&
+      (document.activeElement === commandInput.current ||
+        document.activeElement === document.body)
+    )
+      commandInput.current.focus();
+  }, [props.running]);
+
   return (
-    <div className={styles.promptBar + " " + firaCode.className} aria-disabled={props.running}>
+    <div
+      className={styles.promptBar + " " + firaCode.className}
+      aria-disabled={props.running}
+    >
       <div className={styles.prompt}>$</div>
       <pre
         role="textbox"

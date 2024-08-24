@@ -1,15 +1,16 @@
 "use client";
+import { firaCode } from "@/app/lib/fonts/main";
 import { execute, OutputType } from "@/app/lib/shell/execute";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HistoryItem from "./log-history/history-item";
 import PromptBar from "./prompt-bar/prompt-bar";
 import styles from "./terminal.module.css";
-import { firaCode } from "@/app/lib/fonts/main";
 
 export default function Terminal() {
   type historyItem = { args: string[]; output: React.ReactNode[] };
   const [running, setRunning] = useState<boolean>(false);
   const [history, setHistory] = useState<historyItem[]>([]);
+  const historyDiv = useRef<HTMLDivElement>(null);
 
   function runCommand(args: string[]) {
     setRunning(true);
@@ -41,14 +42,26 @@ export default function Terminal() {
     });
   }
 
+  useEffect(() => {
+    setTimeout(
+      () =>
+        historyDiv.current?.lastElementChild?.scrollIntoView({
+          block: "end",
+          behavior: "smooth",
+        }),
+      100
+    );
+  }, [history]);
+
   return (
     <div className={styles.terminal + " " + firaCode.className}>
-      <div className={styles.history}>
+      <div className={styles.history} ref={historyDiv}>
         {history.map((item, i) => (
           <HistoryItem key={i} args={item.args}>
             {item.output}
           </HistoryItem>
         ))}
+        <div aria-hidden></div>
       </div>
       <div className={styles.promptBar}>
         <PromptBar onCommand={runCommand} running={running} />
