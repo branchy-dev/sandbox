@@ -6,7 +6,7 @@ import HistoryItem from "./log-history/history-item";
 import PromptBar from "./prompt-bar/prompt-bar";
 import styles from "./terminal.module.css";
 
-export default function Terminal() {
+export default function Terminal(props: { onUpdate: () => void }) {
   type historyItem = { args: string[]; output: React.ReactNode[] };
   const [running, setRunning] = useState<boolean>(false);
   const [history, setHistory] = useState<historyItem[]>([]);
@@ -41,6 +41,10 @@ export default function Terminal() {
       }
     });
   }
+
+  useEffect(() => {
+    props.onUpdate();
+  }, [running]);
 
   useEffect(() => {
     setTimeout(

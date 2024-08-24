@@ -6,7 +6,10 @@ import styles from "./editor.module.css";
 import FileTree from "./file-tree/file-tree";
 import TextEditor from "./text-editor/text-editor";
 
-export default function Editor() {
+export default function Editor(props: {
+  onUpdate: () => void;
+  update: number;
+}) {
   const [data, setData] = useState<Data>({});
   const [currentFile, setCurrentFile] = useState<{
     path: string;
@@ -19,9 +22,14 @@ export default function Editor() {
     setData(newData);
   }
 
+  useEffect(() => {
+    updateData();
+  }, [props.update]);
+
   async function overwriteCurrentFile(newData: string) {
     if (!currentFile) return;
     await fs.p.writeFile(currentFile.path, newData);
+    props.onUpdate();
   }
 
   const fileRoot = fs.gitWorkingDir ?? "/";

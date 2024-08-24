@@ -1,15 +1,19 @@
 "use client";
 import git from "isomorphic-git";
+import { posix as path } from "path";
 import { useEffect, useState } from "react";
 import fs from "../../lib/fs/main";
 import Chart from "./chart/chart";
 import styles from "./graph.module.css";
 
-export default function Graph() {
+export default function Graph(props: { update: number }) {
   const [data, setData] = useState<string>("");
 
   async function generateTree() {
     fs.init();
+    if (!(await fs.isFile(path.join(fs.gitWorkingDir, ".git", "HEAD")))) {
+      return;
+    }
     const logs = await git.log({
       fs: fs.p,
       dir: fs.gitWorkingDir,
@@ -60,7 +64,7 @@ export default function Graph() {
 
   useEffect(() => {
     generateTree();
-  }, []);
+  }, [props.update]);
 
   return (
     <div className={styles.graph}>
