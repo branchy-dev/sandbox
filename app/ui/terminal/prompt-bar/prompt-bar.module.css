@@ -5,9 +5,11 @@
   font-size: 1rem;
   padding: 0.55rem 0.8rem;
   background-color: #ffffff09;
-  border-radius: 10rem;
+  border-radius: 1.2rem;
   border: solid 0.08rem #ffffff20;
   backdrop-filter: blur(0.6rem);
+  position: absolute;
+  inset: auto 0 0 0;
 }
 
 .promptBar:focus-within {
