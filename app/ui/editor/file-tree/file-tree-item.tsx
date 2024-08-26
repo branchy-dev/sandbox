@@ -88,9 +88,9 @@ export default function FileTreeItem(
         }}
         // For renaming
         suppressContentEditableWarning={true}
-        contentEditable={isBeingRenamed || undefined}
-        aria-multiline={false}
-        spellCheck={false}
+        contentEditable={isBeingRenamed ? true : undefined}
+        aria-multiline={isBeingRenamed ? false : undefined}
+        spellCheck={isBeingRenamed ? false : undefined}
         tabIndex={isBeingRenamed ? 0 : undefined}
         role={isBeingRenamed ? "textbox" : undefined}
         aria-placeholder={

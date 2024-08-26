@@ -183,6 +183,7 @@ export default function PromptBar(props: {
         onInput={() => update()}
         ref={commandInput}
         aria-disabled={props.running}
+        aria-label="Enter shell prompt"
         onKeyDownCapture={(e) => {
           if (e.key === "Enter") {
             if (commandInput.current?.dataset.valid === "true") {
