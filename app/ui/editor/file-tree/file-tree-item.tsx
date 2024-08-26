@@ -29,6 +29,8 @@ export default function FileTreeItem(
     !!props.isPlaceholder // Placeholder is always being renamed
   );
 
+  const [isOpen, setIsOpen] = useState<boolean>(false); // For directories
+
   let editButtons = <></>;
   if (!props.isPlaceholder)
     editButtons = (
@@ -143,8 +145,6 @@ export default function FileTreeItem(
   }
 
   // Display directory
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <li
       className={styles.fileTreeItem}
