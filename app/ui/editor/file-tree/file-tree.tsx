@@ -65,7 +65,7 @@ export default function FileTree(props: {
           <FontAwesomeIcon icon={faPlus} />
         </button>
       </header>
-      <ul role="tree">
+      <ul>
         {display(props.data)}
         {placeholder && (
           <FileTreeItem

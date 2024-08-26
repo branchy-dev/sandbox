@@ -125,11 +125,17 @@ export default function FileTreeItem(
   if (!props.isDir) {
     return (
       <li
-        role="treeitem"
         className={styles.fileTreeItem}
         aria-label={props.path}
-        aria-selected={props.isSelected}
+        data-selected={props.isSelected}
         onClick={(e) => (e.stopPropagation(), props.onSelect())}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.stopPropagation();
+            props.onSelect();
+          }
+        }}
+        tabIndex={0}
       >
         {topLine}
       </li>
@@ -141,12 +147,18 @@ export default function FileTreeItem(
 
   return (
     <li
-      role="treeitem"
       className={styles.fileTreeItem}
       data-isdir
-      aria-expanded={isOpen}
+      data-expanded={isOpen}
       aria-label={props.path}
       onClick={(e) => (e.stopPropagation(), setIsOpen((x) => !x))}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.stopPropagation();
+          setIsOpen((x) => !x);
+        }
+      }}
+      tabIndex={0}
     >
       {topLine}
       {isOpen ? <ul role="group">{props.children}</ul> : null}

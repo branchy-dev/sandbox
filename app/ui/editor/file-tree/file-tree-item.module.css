@@ -8,7 +8,7 @@
   list-style-type: disclosure-closed;
 }
 
-.fileTreeItem[aria-expanded="true"] {
+.fileTreeItem[data-expanded="true"] {
   list-style-type: disclosure-open;
 }
 
@@ -36,7 +36,7 @@
   background-color: rgba(255, 255, 255, 0.04);
 }
 
-.fileTreeItem[aria-selected="true"] > div::before {
+.fileTreeItem[data-selected="true"] > div::before {
   background-color: rgba(255, 255, 255, 0.15);
   outline: solid 1.5px rgba(255, 255, 255, 0.3);
 }
