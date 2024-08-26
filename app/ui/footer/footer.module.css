@@ -18,3 +18,7 @@
   height: 1rem;
   border-color: #a7a7a7;
 }
+
+.footer a {
+  color: unset;
+}
