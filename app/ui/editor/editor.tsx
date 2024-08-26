@@ -103,7 +103,9 @@ export default function Editor(props: {
       <div className={styles.fileView}>
         <FileTree
           data={data}
-          selectedFile={currentFile?.path.substring(fileRoot.length) ?? null}
+          selectedFile={
+            currentFile ? path.relative(fileRoot, currentFile.path) : null
+          }
           createFile={writeFile}
           deleteFile={removeFile}
           renameFile={renameFile}
