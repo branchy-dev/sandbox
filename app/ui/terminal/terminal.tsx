@@ -44,7 +44,7 @@ export default function Terminal(props: { onUpdate: () => void }) {
 
   useEffect(() => {
     props.onUpdate();
-  }, [props, running]);
+  }, [running]);
 
   useEffect(() => {
     setTimeout(
