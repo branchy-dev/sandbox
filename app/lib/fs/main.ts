@@ -26,13 +26,22 @@ async function dumpTree(parent = "/") {
 
 let initialized = false;
 
+const gitWorkingDir = "/my-repo";
+
 async function init() {
   if (initialized) return;
   initialized = true;
   fs.init("main-fs");
+  try {
+    await fsp.mkdir(gitWorkingDir);
+  } catch (e) {
+    if (e instanceof Error) {
+      const error = e.message.split(":")[0];
+      if (error == "EEXIST") return;
+      throw e;
+    }
+  }
 }
-
-const gitWorkingDir = "/my-repo";
 
 async function exists(filepath: string) {
   try {
