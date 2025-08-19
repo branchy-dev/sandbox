@@ -1,7 +1,13 @@
 "use client";
 import { firaCode } from "@/app/lib/fonts/main";
 import { tokenizeLine, TokenType } from "@/app/lib/shell/tokenizer";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./prompt-bar.module.css";
 
 export default function PromptBar(props: {
@@ -77,7 +83,7 @@ export default function PromptBar(props: {
     selection.addRange(range);
   }
 
-  function highlight() {
+  const highlight = useCallback(() => {
     const textbox = commandInput.current;
     if (!textbox) return;
     const value = inputData[0];
@@ -123,7 +129,7 @@ export default function PromptBar(props: {
     }
 
     textbox.dataset.valid = data.valid ? "true" : "false";
-  }
+  }, [inputData]);
 
   function update() {
     setInputData([commandInput.current?.textContent || "", getCaretPos()]);
@@ -134,7 +140,7 @@ export default function PromptBar(props: {
     highlight();
     commandInput.current.appendChild(document.createElement("br"));
     if (inputData[1] !== undefined) setCaretPos(inputData[1]);
-  }, [inputData]);
+  }, [highlight, inputData]);
 
   function submitCommand() {
     const textbox = commandInput.current;

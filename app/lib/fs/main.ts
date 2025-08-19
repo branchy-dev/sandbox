@@ -79,7 +79,7 @@ async function isDirectory(filepath: string) {
   }
 }
 
-export default {
+const fsModule = {
   p: fsp,
   exists,
   isFile,
@@ -88,3 +88,5 @@ export default {
   init,
   gitWorkingDir,
 };
+
+export default fsModule;

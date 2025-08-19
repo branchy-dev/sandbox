@@ -1,13 +1,14 @@
 "use client";
 import mermaid from "mermaid";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import styles from "./chart.module.css";
 
 export default function Chart(props: { data: string }) {
   const chartDiv = useRef<HTMLDivElement>(null);
 
   mermaid.initialize({ startOnLoad: false, theme: "dark" });
-  async function renderChart() {
+
+  const renderChart = useCallback(async () => {
     if (!chartDiv.current) return;
     document.getElementById("mermaid-chart")?.remove();
     try {
@@ -20,12 +21,12 @@ export default function Chart(props: { data: string }) {
     } catch (e) {
       console.error(e);
     }
-  }
+  }, [props.data]);
 
   useEffect(() => {
     if (!props.data) return;
     renderChart();
-  }, [props.data]);
+  }, [props.data, renderChart]);
 
   return (
     <div className={styles.chart} ref={chartDiv}>

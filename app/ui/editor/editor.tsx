@@ -1,6 +1,6 @@
 "use client";
 import { posix as path } from "path";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import fs, { Data } from "../../lib/fs/main";
 import styles from "./editor.module.css";
 import FileTree from "./file-tree/file-tree";
@@ -16,45 +16,52 @@ export default function Editor(props: {
     body: string;
   } | null>(null);
 
-  async function updateData() {
+  const fileRoot = fs.gitWorkingDir ?? "/";
+
+  const cleanPath = useCallback(
+    (p: string) => {
+      p = path.join(fileRoot, path.normalize(p));
+      const rel = path.relative(fileRoot, p);
+      if (rel.split(path.sep)[0] == ".." || path.isAbsolute(rel)) {
+        throw new Error("Invalid path");
+      }
+      return p;
+    },
+    [fileRoot]
+  );
+
+  const openFile = useCallback(
+    async (filePath?: string) => {
+      if (filePath === currentFile?.path) return;
+      if (filePath) {
+        filePath = await cleanPath(filePath);
+        if (await fs.isFile(filePath)) {
+          const data = (await fs.p.readFile(filePath)).toString();
+          return setCurrentFile({
+            path: filePath,
+            body: data,
+          });
+        }
+      }
+      return setCurrentFile(null);
+    },
+    [currentFile?.path, cleanPath]
+  );
+
+  const updateData = useCallback(async () => {
     await openFile(currentFile?.path);
     const newData = await fs.dumpTree(fileRoot);
     setData(newData);
-  }
+  }, [currentFile?.path, fileRoot, openFile]);
 
   useEffect(() => {
     updateData();
-  }, [props.update]);
+  }, [props.update, updateData]);
 
   async function overwriteCurrentFile(newData: string) {
     if (!currentFile) return;
     await fs.p.writeFile(currentFile.path, newData);
     props.onUpdate();
-  }
-
-  const fileRoot = fs.gitWorkingDir ?? "/";
-  const cleanPath = (p: string) => {
-    p = path.join(fileRoot, path.normalize(p));
-    const rel = path.relative(fileRoot, p);
-    if (rel.split(path.sep)[0] == ".." || path.isAbsolute(rel)) {
-      throw new Error("Invalid path");
-    }
-    return p;
-  };
-
-  async function openFile(filePath?: string) {
-    if (filePath === currentFile?.path) return;
-    if (filePath) {
-      filePath = await cleanPath(filePath);
-      if (await fs.isFile(filePath)) {
-        const data = (await fs.p.readFile(filePath)).toString();
-        return setCurrentFile({
-          path: filePath,
-          body: data,
-        });
-      }
-    }
-    return setCurrentFile(null);
   }
 
   async function createDirectory(dirPath: string): Promise<string | undefined> {
@@ -96,7 +103,7 @@ export default function Editor(props: {
   useEffect(() => {
     fs.init();
     updateData();
-  }, []);
+  }, [updateData]);
 
   return (
     <div className={styles.editor}>
