@@ -2,6 +2,8 @@
 
 A browser-based interactive sandbox environment designed to help developers learn and master Git. Offers a comprehensive learning experience through animated graphics, dynamic visuals, guided tutorials, and real-world challenges. (WIP)
 
+![branchy-demo](https://github.com/user-attachments/assets/868a4123-1b13-447f-bcaf-1da327edfdc6)
+
 ## Features
 
 - **Interactive Sandbox Environment**: Experiment with Git commands in a safe, browser-based environment.
