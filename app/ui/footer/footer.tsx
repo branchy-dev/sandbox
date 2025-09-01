@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div>&copy; 2024 Sátvik Karanam</div>
       <hr />
-      <div>Branchy v0.1.0</div>
+      <div>Branchy v0.1.1</div>
       <hr />
       <div>
         <a target="_blank" href="https://github.com/skara9/branchy">
