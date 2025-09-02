@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  release:
+    types: [released]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: refs/tags/${{ github.event.release.tag_name }}
+      - name: Create release branch
+        run: |
+          git switch -c "release/${{ github.event.release.tag_name }}"
+          git push -u origin "release/${{ github.event.release.tag_name }}"
+      - name: Open PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Release ${{ github.event.release.tag_name }}',
+              head: 'release/${{ github.event.release.tag_name }}',
+              base: 'prod'
+            });
